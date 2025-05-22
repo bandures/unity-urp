@@ -82,6 +82,8 @@ namespace UnityEngine.Rendering.Universal.Internal
             profilingSampler = ProfilingSampler.Get(profileId);
         }
 
+        internal bool IsLayerMaskNone() => m_FilteringSettings.layerMask == 0;
+
         internal void Init(bool opaque, RenderPassEvent evt, RenderQueueRange renderQueueRange, LayerMask layerMask, StencilState stencilState, int stencilReference, ShaderTagId[] shaderTagIds = null)
         {
             if (shaderTagIds == null)
@@ -261,6 +263,10 @@ namespace UnityEngine.Rendering.Universal.Internal
             UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
             UniversalLightData lightData = frameData.Get<UniversalLightData>();
 
+            // Don't add pass if mask is none
+            if (IsLayerMaskNone())
+                return;
+
             using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName, out var passData, profilingSampler))
             {
                 builder.UseAllGlobalTextures(true);
@@ -409,6 +415,10 @@ namespace UnityEngine.Rendering.Universal.Internal
 
         internal void Render(RenderGraph renderGraph, ContextContainer frameData, TextureHandle colorTarget, TextureHandle renderingLayersTexture, TextureHandle depthTarget, TextureHandle mainShadowsTexture, TextureHandle additionalShadowsTexture, RenderingLayerUtils.MaskSize maskSize, uint batchLayerMask = uint.MaxValue)
         {
+            // Don't add pass if mask is none
+            if (IsLayerMaskNone())
+                return;
+
             using (var builder = renderGraph.AddRasterRenderPass<RenderingLayersPassData>(passName, out var passData, profilingSampler))
 
             {
