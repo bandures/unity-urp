@@ -925,7 +925,7 @@ namespace UnityEngine.Rendering.Universal
             return m_Renderers[index];
         }
 
-        internal ScriptableRendererData scriptableRendererData
+        public ScriptableRendererData scriptableRendererData
         {
             get
             {
