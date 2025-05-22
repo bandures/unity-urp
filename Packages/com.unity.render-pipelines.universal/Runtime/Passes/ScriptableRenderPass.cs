@@ -159,6 +159,11 @@ namespace UnityEngine.Rendering.Universal
         /// Executes a <c>ScriptableRenderPass</c> after rendering all effects.
         /// </summary>
         AfterRendering = 1000,
+
+        /// <summary>
+        /// Executes a <c>ScriptableRenderPass</c> after rendering UI overlays.
+        /// </summary>
+        AfterOverlay = 2000,
     }
 
     /// <summary>

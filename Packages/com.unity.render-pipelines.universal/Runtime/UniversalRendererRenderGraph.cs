@@ -1604,6 +1604,8 @@ namespace UnityEngine.Rendering.Universal
                 m_DrawOverlayUIPass.RenderOverlay(renderGraph, frameData, in target, in depthBuffer);
             }
 
+            RecordCustomRenderGraphPasses(renderGraph, RenderPassEvent.AfterOverlay);
+
 #if ENABLE_VR && ENABLE_XR_MODULE
             if (cameraData.xr.enabled)
             {
