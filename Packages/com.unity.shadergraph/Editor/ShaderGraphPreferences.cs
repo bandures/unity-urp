@@ -3,26 +3,6 @@ using UnityEngine;
 
 namespace UnityEditor.ShaderGraph
 {
-    internal class LabelWidthScope : GUI.Scope
-    {
-        float m_previewLabelWidth;
-        internal LabelWidthScope(int labelPadding = 10, int labelWidth = 251)
-        {
-            m_previewLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = labelWidth;
-            GUILayout.BeginHorizontal();
-            GUILayout.Space(labelPadding);
-            GUILayout.BeginVertical();
-        }
-
-        protected override void CloseScope()
-        {
-            GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            EditorGUIUtility.labelWidth = m_previewLabelWidth;
-        }
-    }    
-
     static class ShaderGraphPreferences
     {
         static class Keys
@@ -107,7 +87,9 @@ namespace UnityEditor.ShaderGraph
             if (!m_Loaded)
                 Load();
 
-            using (var scope = new LabelWidthScope(10, 300))
+            EditorGUI.BeginChangeCheck();
+
+            using (new SettingsWindow.GUIScope())
             {
                 var actualLimit = ShaderGraphProjectSettings.instance.shaderVariantLimit;
                 var willPreviewVariantBeIgnored = ShaderGraphPreferences.previewVariantLimit > actualLimit;
@@ -116,7 +98,6 @@ namespace UnityEditor.ShaderGraph
                     ? new GUIContent("Preview Variant Limit", EditorGUIUtility.IconContent("console.infoicon").image, $"The Preview Variant Limit is higher than the Shader Variant Limit in Project Settings: {actualLimit}. The Preview Variant Limit will be ignored.")
                     : new GUIContent("Preview Variant Limit");
 
-                EditorGUI.BeginChangeCheck();
                 var variantLimitValue = EditorGUILayout.DelayedIntField(variantLimitLabel, previewVariantLimit);
                 variantLimitValue = Mathf.Max(0, variantLimitValue);
                 if (EditorGUI.EndChangeCheck())
@@ -145,6 +126,7 @@ namespace UnityEditor.ShaderGraph
                     zoomStepSize = zoomStepSizeValue;
                 }
             }
+
         }
 
         static void Load()

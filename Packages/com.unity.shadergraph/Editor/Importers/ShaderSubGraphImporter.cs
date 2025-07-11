@@ -15,13 +15,11 @@ using UnityEditor.Graphing.Util;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine.Pool;
-using UnityEngine.Rendering;
 
 namespace UnityEditor.ShaderGraph
 {
     [ExcludeFromPreset]
     [ScriptedImporter(30, Extension, -905)]
-    [CoreRPHelpURL("Sub-graph", "com.unity.shadergraph")]
     class ShaderSubGraphImporter : ScriptedImporter
     {
         public const string Extension = "shadersubgraph";
@@ -426,7 +424,7 @@ namespace UnityEditor.ShaderGraph
         {
             var dependencyMap = new Dictionary<GUID, GUID[]>();
             AssetCollection tempAssetCollection = new AssetCollection();
-            using (UnityEngine.Pool.ListPool<GUID>.Get(out var tempList))
+            using (ListPool<GUID>.Get(out var tempList))
             {
                 GatherDependencyMap(rootAssetGuid, dependencyMap, tempAssetCollection);
                 containsCircularDependency = ContainsCircularDependency(rootAssetGuid, dependencyMap, tempList);

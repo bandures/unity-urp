@@ -175,10 +175,6 @@ VFXDataAnchor.Output #type
     -unity-text-align: middle-center;
 }
 
-.VFXDataAnchor .propertyrm #matrixContainer FloatInput {
-    width: 30px;
-}
-
 .VFXOutputDataAnchor #icon
 {
     width: 13px;

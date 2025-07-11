@@ -685,7 +685,8 @@ namespace UnityEngine.Rendering
             }
         }
 
-        // A copy/paste because it's apparently impossible to pass a sort delegate where T is Comparable<T>, otherwise some boxing happens and allocates...
+        // C# SUCKS
+        // Had to copy paste because it's apparently impossible to pass a sort delegate where T is Comparable<T>, otherwise some boxing happens and allocates...
         // So two identical versions of the function, one with delegate but no Comparable and the other with just the comparable.
         static int Partition<T>(Span<T> data, int left, int right, DynamicArray<T>.SortComparer comparer) where T : new()
         {

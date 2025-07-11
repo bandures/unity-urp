@@ -268,7 +268,6 @@ namespace UnityEditor.ShaderGraph.Drawing
                 {
                     UserViewSettingsChangeCheck(newColorIndex);
                 }
-                GUILayout.Space(6);
                 GUILayout.EndHorizontal();
             });
             Add(toolbar);

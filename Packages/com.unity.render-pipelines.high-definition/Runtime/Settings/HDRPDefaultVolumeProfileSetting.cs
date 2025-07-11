@@ -43,9 +43,9 @@ namespace UnityEngine.Rendering.HighDefinition
     
 #if UNITY_EDITOR
     //Overriding "Reset" in menu that is not called at HDRPDefaultVolumeProfileSettings creation such Reset()
-    struct ResetImplementation : IRenderPipelineGraphicsSettingsContextMenu2<HDRPDefaultVolumeProfileSettings>
+    struct ResetImplementation : IRenderPipelineGraphicsSettingsContextMenu<HDRPDefaultVolumeProfileSettings>
     {
-        public void PopulateContextMenu(HDRPDefaultVolumeProfileSettings setting, SerializedProperty _, ref GenericMenu menu)
+        public void PopulateContextMenu(HDRPDefaultVolumeProfileSettings setting, PropertyDrawer drawer, ref GenericMenu menu)
         {
             void Reset()
             {

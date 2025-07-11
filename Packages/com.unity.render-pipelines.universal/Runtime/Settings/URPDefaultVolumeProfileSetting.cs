@@ -42,9 +42,9 @@ namespace UnityEngine.Rendering.Universal
     
 #if UNITY_EDITOR
     //Overriding "Reset" in menu that is not called at URPDefaultVolumeProfileSettings creation such Reset()
-    struct ResetImplementation : IRenderPipelineGraphicsSettingsContextMenu2<URPDefaultVolumeProfileSettings>
+    struct ResetImplementation : IRenderPipelineGraphicsSettingsContextMenu<URPDefaultVolumeProfileSettings>
     {
-        public void PopulateContextMenu(URPDefaultVolumeProfileSettings setting, SerializedProperty _, ref GenericMenu menu)
+        public void PopulateContextMenu(URPDefaultVolumeProfileSettings setting, PropertyDrawer drawer, ref GenericMenu menu)
         {
             void Reset()
             {

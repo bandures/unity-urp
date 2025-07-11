@@ -262,7 +262,7 @@ namespace UnityEngine.Rendering.Universal
                     bool needsMotion = (input & ScriptableRenderPassInput.Motion) != ScriptableRenderPassInput.None;
                     bool needsNormal = (input & ScriptableRenderPassInput.Normal) != ScriptableRenderPassInput.None;
 
-                    if (needsColor && cameraData.renderer.SupportsCameraOpaque())
+                    if (needsColor)
                     {
                         Debug.Assert(resourcesData.cameraOpaqueTexture.IsValid());
                         builder.UseTexture(resourcesData.cameraOpaqueTexture);
@@ -276,18 +276,13 @@ namespace UnityEngine.Rendering.Universal
 
                     if (needsMotion)
                     {
-                        Debug.Assert(cameraData.renderer.SupportsMotionVectors(), "Current renderer does not support motion vectors.");
-
-                        if (cameraData.renderer.SupportsMotionVectors())
-                        {
-                            Debug.Assert(resourcesData.motionVectorColor.IsValid());
-                            builder.UseTexture(resourcesData.motionVectorColor);
-                            Debug.Assert(resourcesData.motionVectorDepth.IsValid());
-                            builder.UseTexture(resourcesData.motionVectorDepth);
-                        }
+                        Debug.Assert(resourcesData.motionVectorColor.IsValid());
+                        builder.UseTexture(resourcesData.motionVectorColor);
+                        Debug.Assert(resourcesData.motionVectorDepth.IsValid());
+                        builder.UseTexture(resourcesData.motionVectorDepth);
                     }
 
-                    if (needsNormal && cameraData.renderer.SupportsCameraNormals())
+                    if (needsNormal)
                     {
                         Debug.Assert(resourcesData.cameraNormalsTexture.IsValid());
                         builder.UseTexture(resourcesData.cameraNormalsTexture);

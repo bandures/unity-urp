@@ -398,8 +398,8 @@ half AdditionalLightRealtimeShadow(int lightIndex, float3 positionWS, half3 ligh
         if (isPointLight)
         {
             // This is a point light, we have to find out which shadow slice to sample from
-            const int cubeFaceOffset = CubeMapFaceID(-lightDirection);
-            shadowSliceIndex += cubeFaceOffset;
+            float cubemapFaceId = CubeMapFaceID(-lightDirection);
+            shadowSliceIndex += cubemapFaceId;
         }
 
         #if USE_STRUCTURED_BUFFER_FOR_LIGHT_DATA

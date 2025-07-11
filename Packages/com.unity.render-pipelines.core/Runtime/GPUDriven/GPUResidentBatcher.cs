@@ -196,7 +196,12 @@ namespace UnityEngine.Rendering
 
                 Profiler.BeginSample("InstanceCullingBatcher.BuildBatch");
                 {
-                    m_InstanceCullingBatcher.BuildBatch(instances, rendererData, true);
+                    m_InstanceCullingBatcher.BuildBatch(
+                        instances,
+                        rendererData.materialID,
+                        rendererData.meshID,
+                        rendererData, true);
+
                 }
                 Profiler.EndSample();
 
@@ -229,11 +234,15 @@ namespace UnityEngine.Rendering
 
                 Profiler.BeginSample("InstanceCullingBatcher.BuildBatch");
                 {
-                    m_InstanceCullingBatcher.BuildBatch(instances.AsArray(), rendererData, false);
+                    m_InstanceCullingBatcher.BuildBatch(
+                        instances.AsArray(),
+                        rendererData.materialID,
+                        rendererData.meshID,
+                        rendererData, false);
+                    instances.Dispose();
                 }
                 Profiler.EndSample();
 
-                instances.Dispose();
             }
             Profiler.EndSample();
         }

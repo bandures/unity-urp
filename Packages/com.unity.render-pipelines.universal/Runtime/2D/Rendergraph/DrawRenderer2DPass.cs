@@ -156,6 +156,7 @@ namespace UnityEngine.Rendering.Universal
                 builder.SetRenderAttachmentDepth(commonResourceData.activeDepthTexture);
                 builder.AllowPassCulling(false);
                 builder.AllowGlobalStateModification(true);
+                builder.UseAllGlobalTextures(true);
 
                 // Post set global light textures for next renderer pass 
                 var nextBatch = batchIndex + 1;

@@ -274,6 +274,7 @@ namespace UnityEditor.Rendering.HighDefinition
             public static readonly GUIContent TAAUInjectionPoint = EditorGUIUtility.TrTextContent("TAA Upscale Injection Point", "The injection point at which to apply the upscaling.");
             public static readonly GUIContent STPInjectionPoint = EditorGUIUtility.TrTextContent("STP Injection Point", "The injection point at which to apply the upscaling.");
             public static readonly GUIContent DLSSUseOptimalSettingsContent = EditorGUIUtility.TrTextContent("DLSS Use Optimal Settings", "Sets the sharpness and scale automatically for NVIDIA Deep Learning Super Sampling, depending on the values of quality settings. When DLSS Optimal Settings is on, the percentage settings for Dynamic Resolution Scaling are ignored.");
+            public static readonly GUIContent DLSSSharpnessContent = EditorGUIUtility.TrTextContent("DLSS Sharpness", "NVIDIA Deep Learning Super Sampling pixel sharpness of upsampler. Controls how the DLSS upsampler will render edges on the image. More sharpness usually means more contrast and clearer image but can increase flickering and fireflies. This setting is ignored if optimal settings are used.");
 
             public static readonly GUIContent FSR2Title = EditorGUIUtility.TrTextContent("AMD FidelityFX Super Resolution 2.0 (FSR2)");
             public static readonly GUIContent enableFSR2 = EditorGUIUtility.TrTextContent("Enable Fidelity FX 2.2", "Enables FidelityFX 2.0 Super Resolution (FSR2).");
@@ -310,7 +311,7 @@ namespace UnityEditor.Rendering.HighDefinition
             public const string FSR2WinTargetWarning = "HDRP does not support AMD Fidelity FX2 for the current build target and graphics device API. To enable FSR2, set your build target to Windows x86_64 and DirectX12.";
             public const string FSR2SwitchTarget64Button = "Fix";
             public const string FSR2FeatureDetectedMsg = "Unity detected AMD Fidelity FX 2 Super Resolution and will ignore the Fallback Upscale Filter.";
-            public const string FSR2FeatureNotDetectedMsg = "Unity cannot detect AMD Fidelity FX 2 Super Resolution and will use the Fallback Upscale Filter instead.";
+            public const string FSR2FeatureNotDetectedMsg = "Unity cannot detect Unity detected AMD Fidelity FX 2 Super Resolution and will use the Fallback Upscale Filter instead.";
 
             public const string STPSwDrsWarningMsg = "STP cannot support dynamic resolution without hardware dynamic resolution mode. You can use the forced screen percentage feature to guarantee a fixed resoution for STP or HDRP will fall back to the next best supported upscaling filter instead.";
 

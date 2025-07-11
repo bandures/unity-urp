@@ -26,7 +26,6 @@ namespace UnityEditor.ShaderGraph.Drawing
 
         VisualElement m_PreviewContainer;
         VisualElement m_PreviewFiller;
-        VisualElement m_PreviewExpand;
         VisualElement m_ControlItems;
         VisualElement m_ControlsDivider;
         VisualElement m_DropdownItems;
@@ -91,7 +90,7 @@ namespace UnityEditor.ShaderGraph.Drawing
                 contents.Add(dropdownContainer);
             }
 
-            if (node.hasPreview && IsPreviewable(node))
+            if (node.hasPreview)
             {
                 // Add actual preview which floats on top of the node
                 m_PreviewContainer = new VisualElement
@@ -131,17 +130,17 @@ namespace UnityEditor.ShaderGraph.Drawing
                     previewDivider.AddToClassList("horizontal");
                     m_PreviewFiller.Add(previewDivider);
 
-                    m_PreviewExpand = new VisualElement { name = "expand" };
-                    m_PreviewExpand.Add(new VisualElement { name = "icon" });
-                    m_PreviewExpand.AddManipulator(new Clickable(() =>
+                    var expandPreviewButton = new VisualElement { name = "expand" };
+                    expandPreviewButton.Add(new VisualElement { name = "icon" });
+                    expandPreviewButton.AddManipulator(new Clickable(() =>
                     {
                         SetPreviewExpandedStateOnSelection(true);
                     }));
-                    m_PreviewFiller.Add(m_PreviewExpand);
+                    m_PreviewFiller.Add(expandPreviewButton);
                 }
                 contents.Add(m_PreviewFiller);
 
-                UpdatePreviewExpandedState(IsPreviewable(node) ? node.previewExpanded : false);
+                UpdatePreviewExpandedState(node.previewExpanded);
             }
 
             base.expanded = node.drawState.expanded;
@@ -482,32 +481,9 @@ namespace UnityEditor.ShaderGraph.Drawing
             return !(node is BlockNode) && m_CollapseButton.enabledInHierarchy;
         }
 
-        static bool IsPreviewable(AbstractMaterialNode node)
-        {
-            // only the first output slot is considered.
-            foreach (var slot in node.GetOutputSlots<MaterialSlot>())
-            {
-                switch (slot.concreteValueType)
-                {
-                    case ConcreteSlotValueType.Vector4:
-                    case ConcreteSlotValueType.Vector3:
-                    case ConcreteSlotValueType.Vector2:
-                    case ConcreteSlotValueType.Vector1:
-                        return true;
-                }
-                return false;
-            }
-            return false;
-        }
-
         void UpdatePreviewExpandedState(bool expanded)
         {
-            var previewable = IsPreviewable(node);
-
-            if (m_PreviewExpand != null)
-                m_PreviewExpand.visible = previewable;
-
-            node.previewExpanded = expanded && previewable;
+            node.previewExpanded = expanded;
             if (m_PreviewFiller == null)
                 return;
             if (expanded)
@@ -592,7 +568,7 @@ namespace UnityEditor.ShaderGraph.Drawing
             UpdateTitle();
             SetActive(node.isActive);
             if (node.hasPreview)
-                UpdatePreviewExpandedState(IsPreviewable(node) ? node.previewExpanded : false);
+                UpdatePreviewExpandedState(node.previewExpanded);
 
             base.expanded = node.drawState.expanded;
 

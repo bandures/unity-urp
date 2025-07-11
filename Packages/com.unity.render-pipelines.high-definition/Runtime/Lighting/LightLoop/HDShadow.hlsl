@@ -49,11 +49,10 @@ float GetPunctualShadowAttenuation(HDShadowContext shadowContext, float2 positio
 
     if (pointLight)
     {
-        const int cubeFaceOffset = CubeMapFaceID(-L);
-        sd.rot0 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot0;
-        sd.rot1 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot1;
-        sd.rot2 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot2;
-        sd.atlasOffset = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].atlasOffset;
+        sd.rot0 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot0;
+        sd.rot1 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot1;
+        sd.rot2 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot2;
+        sd.atlasOffset = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].atlasOffset;
     }
 
     if (sd.isInCachedAtlas > 0) // This is a scalar branch.
@@ -78,12 +77,11 @@ float GetPunctualShadowClosestDistance(HDShadowContext shadowContext, SamplerSta
 
     if (pointLight)
     {
-        const int cubeFaceOffset = CubeMapFaceID(-L);
-        sd.shadowToWorld = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].shadowToWorld;
-        sd.atlasOffset = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].atlasOffset;
-        sd.rot0 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot0;
-        sd.rot1 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot1;
-        sd.rot2 = shadowContext.shadowDatas[shadowDataIndex + cubeFaceOffset].rot2;
+        sd.shadowToWorld = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].shadowToWorld;
+        sd.atlasOffset = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].atlasOffset;
+        sd.rot0 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot0;
+        sd.rot1 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot1;
+        sd.rot2 = shadowContext.shadowDatas[shadowDataIndex + CubeMapFaceID(-L)].rot2;
     }
 
     if (sd.isInCachedAtlas > 0) // This is a scalar branch.

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEditor.Graphing;
-using UnityEditor.ShaderGraph.Drawing.Inspector;
 
 namespace UnityEditor.ShaderGraph.Drawing
 {
@@ -64,7 +63,6 @@ namespace UnityEditor.ShaderGraph.Drawing
                     node.functionName = m_FunctionName.value;
                     node.ValidateNode();
                     node.Dirty(ModificationScope.Graph);
-                    this.GetFirstAncestorOfType<InspectorView>()?.RefreshInspectables();
                 }
             });
 

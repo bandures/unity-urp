@@ -42,7 +42,7 @@ namespace UnityEngine.Rendering.Universal
             if (light.lightType != Light2D.LightType.Global)
                 return;
 
-            foreach (var sortingLayer in light.targetSortingLayers)
+            foreach (var sortingLayer in light.affectedSortingLayers)
             {
                 // should this really trigger at runtime?
                 if (ContainsDuplicateGlobalLight(sortingLayer, light.blendStyleIndex))

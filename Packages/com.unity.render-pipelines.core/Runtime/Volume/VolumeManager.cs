@@ -116,23 +116,11 @@ namespace UnityEngine.Rendering
                 .OrderBy(i => i.Item1)
                 .ToList();
         }
-        
-        Type[] m_BaseComponentTypeArray;
 
         /// <summary>
         /// The current list of all available types that derive from <see cref="VolumeComponent"/>.
         /// </summary>
-        public Type[] baseComponentTypeArray 
-        { 
-            get
-            {
-                if (isInitialized)
-                    return m_BaseComponentTypeArray;
-
-                throw new InvalidOperationException($"{nameof(VolumeManager)}.{nameof(instance)}.{nameof(baseComponentTypeArray)} cannot be called before the {nameof(VolumeManager)} is initialized. (See {nameof(VolumeManager)}.{nameof(instance)}.{nameof(isInitialized)} and {nameof(RenderPipelineManager)} for creation callback).");
-            }
-            internal set => m_BaseComponentTypeArray = value; // internal only for tests
-        } 
+        public Type[] baseComponentTypeArray { get; internal set; } // internal only for tests
 
         /// <summary>
         /// Global default profile that provides default values for volume components. VolumeManager applies
@@ -233,19 +221,13 @@ namespace UnityEngine.Rendering
             Debug.Assert(m_CreatedVolumeStacks.Count == 0);
 
             LoadBaseTypes(GraphicsSettings.currentRenderPipelineAssetType);
-            InitializeInternal(globalDefaultVolumeProfile, qualityDefaultVolumeProfile);
-        }
-
-        //This is called by test where the basetypes are tuned for the purpose of the test.
-        internal void InitializeInternal(VolumeProfile globalDefaultVolumeProfile = null, VolumeProfile qualityDefaultVolumeProfile = null)
-        {
             InitializeVolumeComponents();
 
             globalDefaultProfile = globalDefaultVolumeProfile;
             qualityDefaultProfile = qualityDefaultVolumeProfile;
             EvaluateVolumeDefaultState();
 
-            m_DefaultStack = CreateStackInternal();
+            m_DefaultStack = CreateStack();
             stack = m_DefaultStack;
 
             isInitialized = true;
@@ -345,16 +327,8 @@ namespace UnityEngine.Rendering
         /// <seealso cref="Update(VolumeStack,Transform,LayerMask)"/>
         public VolumeStack CreateStack()
         {
-            if (!isInitialized)
-                throw new InvalidOperationException($"{nameof(VolumeManager)}.{nameof(instance)}.{nameof(CreateStack)}() cannot be called before the {nameof(VolumeManager)} is initialized. (See {nameof(VolumeManager)}.{nameof(instance)}.{nameof(isInitialized)} and {nameof(RenderPipelineManager)} for creation callback).");
-
-            return CreateStackInternal();
-        }
-
-        VolumeStack CreateStackInternal()
-        {
             var stack = new VolumeStack();
-            stack.Reload(m_BaseComponentTypeArray);
+            stack.Reload(baseComponentTypeArray);
             m_CreatedVolumeStacks.Add(stack);
             return stack;
         }
@@ -426,18 +400,15 @@ namespace UnityEngine.Rendering
                         list.Add(t);
                 }
 
-                m_BaseComponentTypeArray = list.ToArray();
+                baseComponentTypeArray = list.ToArray();
             }
         }
 
         internal void InitializeVolumeComponents()
         {
-            if (m_BaseComponentTypeArray == null || m_BaseComponentTypeArray.Length == 0)
-                return;
-
             // Call custom static Init method if present
             var flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-            foreach (var type in m_BaseComponentTypeArray)
+            foreach (var type in baseComponentTypeArray)
             {
                 var initMethod = type.GetMethod("Init", flags);
                 if (initMethod != null)
@@ -448,9 +419,9 @@ namespace UnityEngine.Rendering
         }
 
         // Evaluate static default values for VolumeComponents, which is the baseline to reset the values to at the start of Update.
-        void EvaluateVolumeDefaultState()
+        internal void EvaluateVolumeDefaultState()
         {
-            if (m_BaseComponentTypeArray == null || m_BaseComponentTypeArray.Length == 0)
+            if (baseComponentTypeArray == null || baseComponentTypeArray.Length == 0)
                 return;
 
             using var profilerScope = k_ProfilerMarkerEvaluateVolumeDefaultState.Auto();
@@ -461,7 +432,7 @@ namespace UnityEngine.Rendering
 
             // First, default-construct all VolumeComponents
             List<VolumeComponent> componentsDefaultStateList = new();
-            foreach (var type in m_BaseComponentTypeArray)
+            foreach (var type in baseComponentTypeArray)
             {
                 componentsDefaultStateList.Add((VolumeComponent) ScriptableObject.CreateInstance(type));
             }
